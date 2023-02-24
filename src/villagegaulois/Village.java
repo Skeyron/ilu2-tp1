@@ -1,5 +1,10 @@
 package villagegaulois;
 
+import java.security.PublicKey;
+import java.util.Iterator;
+
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+
 import org.omg.CORBA.PRIVATE_MEMBER;
 
 import com.sun.jndi.url.iiopname.iiopnameURLContextFactory;
@@ -130,35 +135,51 @@ public class Village {
 					libre ++;
 				}
 			}
- 			str.append("Il reste " + libre + " étals non utilisés dans le marché");
+ 			str.append("Il reste " + libre + " ï¿½tals non utilisï¿½s dans le marchï¿½");
  			return str.toString();
  		}
 	}
 	
  	public String installerVendeur(Gaulois vendeur,String produit, int nbProduit) {
 		StringBuilder chaine = new StringBuilder();
-		chaine.append(vendeur + "cherche un endroit pour vendre " + nbProduit + produit + ". \n");
+		chaine.append(vendeur.getNom() + "cherche un endroit pour vendre " + nbProduit + produit + " . \n");
 		int etalNum = marche.trouverEtalLibre();
 		if (etalNum == -1) {
-			chaine.append("Aucun Etal disponible");
+			chaine.append(" Aucun Etal disponible");
 			return chaine.toString();
 		} else {
-			chaine.append("Le vendeur " + vendeur + " vend des lyres à l'étal " + etalNum);
+			chaine.append("Le vendeur " + vendeur.getNom() + " vend des lyres ï¿½ l'ï¿½tal " + etalNum);
 		return chaine.toString();	
 		}
  	}
  	
-// 	public String rechercherVendeursProduit(String produit) {
- 		
-// 	}
+ 	public String rechercherVendeursProduit(String produit) {
+ 		StringBuilder chaine = new StringBuilder();
+ 		Etal[] tab = marche.trouverEtals(produit);
+ 		for (int i = 0; i < tab.length; i++) {
+			chaine.append("\n - " + tab[i].getVendeur().getNom());
+		}
+ 		return chaine.toString();
+ 	}
  	
  	public Etal rechercherEtal(Gaulois vendeur) {
  		return marche.trouverVendeur(vendeur);
+
  	}
  	
-// 	public String partirVendeur(Gaulois vendeur) {
- 		
+ 	public String partirVendeur(Gaulois vendeur) {
+ 		Etal vend = marche.trouverVendeur(vendeur);
+ 		if (vend != null) {
+ 			return vend.libererEtal();
+ 		} else {
+ 			return "Aucun vendeur de ce nom";
+ 		}	
  	}
+ 	
+ 	public String afficherMarche() {
+		return marche.afficherMarche();
+	}
+	}
  		
  		
  
